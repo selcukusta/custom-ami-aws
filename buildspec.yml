@@ -1,0 +1,25 @@
+version: 0.2
+
+env:
+  parameter-store:
+    STORED_ACCESS_KEY: "ACCESS_KEY"
+    STORED_SECRET_KEY: "SECRET_KEY"
+
+phases:
+  pre_build:
+    commands:
+      - echo "Installing HashiCorp Packer..."
+      - curl -qL -o packer.zip https://releases.hashicorp.com/packer/1.3.1/packer_1.3.1_linux_amd64.zip && unzip packer.zip
+      - echo "Installing Ansible..."
+      - sudo apt-get update
+      - sudo apt-get install software-properties-common
+      - sudo apt-add-repository ppa:ansible/ansible
+      - sudo apt-get update
+      - sudo apt-get install -y ansible
+      - ansible --version
+      - ./packer validate packer-template.json
+  build:
+    commands:
+      - export AWS_ACCESS_KEY=${STORED_ACCESS_KEY}
+      - export AWS_SECRET_KEY=${STORED_SECRET_KEY}
+      - ./packer build packer-template.json

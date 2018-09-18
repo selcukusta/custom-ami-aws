@@ -1,0 +1,30 @@
+{
+    "variables": {
+      "access_key": "{{env `AWS_ACCESS_KEY`}}",
+      "secret_key": "{{env `AWS_SECRET_KEY`}}"
+    },
+    "builders": [
+      {
+        "type": "amazon-ebs",
+        "access_key": "{{user `access_key`}}",
+        "secret_key": "{{user `secret_key`}}",
+        "region": "us-west-2",
+        "source_ami": "ami-51537029",
+        "instance_type": "t2.micro",
+        "ssh_username": "ubuntu",
+        "ami_name": "ami-with-docker-su",
+        "ami_description": "Ubuntu Server 16.04 LTS (HVM), SSD Volume Type"
+      }
+    ],
+    "provisioners": [
+      {
+        "type": "shell",
+        "script": "./install-python.sh"
+      },
+      {
+        "type": "ansible",
+        "user": "ubuntu",
+        "playbook_file": "./playbook.yml"
+      }
+    ]
+  }
