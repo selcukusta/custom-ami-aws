@@ -375,5 +375,7 @@ ASALocalRun/
 # Local History for Visual Studio
 .localhistory/
 
+# Custom file(s)
+provisioning.txt
 
 # End of https://www.gitignore.io/api/packer,ansible,terraform,visualstudio,visualstudiocode
